@@ -1,0 +1,24 @@
+[package]
+name = "pyre-python-engine"
+version = "0.1.0"
+edition = "2021"
+authors = ["APW Labs"]
+description = "Core environment auto-detection and sandboxed process supervisor for APW Python IDE"
+
+[dependencies]
+tokio = { version = "1.38", features = ["full"] }
+serde = { version = "1.0", features = ["derive"] }
+serde_json = { version = "1.0" }
+which = { version = "6.0" }
+dirs = { version = "5.0" }
+tracing = { version = "0.1" }
+thiserror = { version = "1.0" }
+async-stream = { version = "0.3" }
+futures-util = { version = "0.3" }
+
+[target.'cfg(unix)'.dependencies]
+nix = { version = "0.29", features = ["process", "signal"] }
+
+[dev-dependencies]
+tempfile = { version = "3.10" }
+tokio-test = { version = "0.4" }
