@@ -45,7 +45,6 @@ impl InterpreterScanner {
             Err(e) => debug!(error = %e, "Conda discovery skipped"),
         }
 
-        // 3. pyenv versions
         match Self::discover_pyenv_versions().await {
             Ok(paths) => candidates.extend(paths),
             Err(e) => debug!(error = %e, "pyenv discovery skipped"),
@@ -192,7 +191,7 @@ print(json.dumps(data))
             .stdin(Stdio::null())
             .stdout(Stdio::piped())
             .stderr(Stdio::piped())
-            .kill_on_drop(true)
+            .kill_on_drop(true);
 
         let output = tokio::time::timeout(Duration::from_secs(3), cmd.output())
             .await
