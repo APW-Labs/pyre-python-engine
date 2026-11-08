@@ -65,7 +65,12 @@ impl ProcessSupervisor {
         #[cfg(windows)]
         cmd.creation_flags(CREATE_NEW_PROCESS_GROUP | CREATE_NO_WINDOW);
 
-        let mut child = cmd.spawn()?;
+        let mut child = cmd.spawn().map_err(|e| {
+            eprintln!("CRITICAL ERROR: Failed to spawn python process: {:?}", e);
+            EngineError::Config(format!("Failed to spawn process: {:?}", e))
+        })?;
+
+        // let mut child = cmd.spawn()?;
         let pid = child
             .id()
             .ok_or_else(|| EngineError::Config("Failed to acquire child process ID".into()))?;
@@ -176,6 +181,9 @@ where
                     buf.pop();
                 }
                 let line = String::from_utf8_lossy(&buf).into_owned();
+
+                println!("DEBUG PUMP CAPTURED LINE: {}", line);
+
                 if tx.send(wrap(line)).await.is_err() {
                     receiver_alive = false;
                 }
