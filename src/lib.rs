@@ -1,6 +1,7 @@
 pub mod error;
 pub mod interpreter;
 pub mod supervisor;
+pub mod venv;
 
 pub use error::{EngineError, Result};
 pub use interpreter::{InterpreterMetadata, InterpreterScanner};
